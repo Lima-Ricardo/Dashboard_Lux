@@ -7,14 +7,20 @@ st.set_page_config(page_title="Ferramenta de Gestão", layout="wide")
 st.markdown(
     """
     <style>
-    .css-1v3fvcr {
-        background-color: #000000;
+    .css-1v3fvcr { /* Sidebar background color */
+        background-color: #04172A;
     }
-    .css-1r6slb1 {
+    .css-1r6slb1, .css-1bu3u8m { /* Text color */
         color: #FFFFFF;
     }
-    .css-1bu3u8m {
-        color: #FFFFFF;
+    .css-16f8t5w { /* Main background color */
+        background-color: #1B4D75;
+    }
+    .css-1d391kg { /* Plotly chart background color */
+        background-color: #1B4D75 !important;
+    }
+    .css-17b2c17 { /* Plotly chart text color */
+        color: #04172A !important;
     }
     </style>
     """,
@@ -78,8 +84,8 @@ def create_charts(df1, df2):
             hover_data={'Consumo Ponta ': ':.2f', 'Empresa': False}
         )
         fig1.update_layout(
-            plot_bgcolor='#000000',
-            paper_bgcolor='#1e1e1e',
+            plot_bgcolor='#1B4D75',
+            paper_bgcolor='#1B4D75',
             font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
@@ -98,8 +104,8 @@ def create_charts(df1, df2):
             hover_data={'Consumo Fora Ponta ': ':.2f', 'Empresa': False}
         )
         fig2.update_layout(
-            plot_bgcolor='#000000',
-            paper_bgcolor='#1e1e1e',
+            plot_bgcolor='#1B4D75',
+            paper_bgcolor='#1B4D75',
             font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
@@ -122,8 +128,8 @@ def create_charts(df1, df2):
             hover_data={'Valor Médio da Fatura': ':.2f', 'Distribuidora': False}
         )
         fig3.update_layout(
-            plot_bgcolor='#000000',
-            paper_bgcolor='#1e1e1e',
+            plot_bgcolor='#1B4D75',
+            paper_bgcolor='#1B4D75',
             font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
@@ -144,8 +150,8 @@ def create_charts(df1, df2):
             hover_data={'Quantidade': True, 'Modalidade Tarifária': False}
         )
         fig4.update_layout(
-            plot_bgcolor='#000000',
-            paper_bgcolor='#1e1e1e',
+            plot_bgcolor='#1B4D75',
+            paper_bgcolor='#1B4D75',
             font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
@@ -168,8 +174,8 @@ def create_charts(df1, df2):
             hover_data={'Quantidade': True, 'Empresa': False}
         )
         fig5.update_layout(
-            plot_bgcolor='#000000',
-            paper_bgcolor='#1e1e1e',
+            plot_bgcolor='#1B4D75',
+            paper_bgcolor='#1B4D75',
             font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
