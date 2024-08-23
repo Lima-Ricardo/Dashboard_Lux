@@ -186,7 +186,7 @@ df1, df2 = load_data()
 
 # Adicionar o logotipo da empresa no topo da sidebar
 # Substitua 'caminho_para_logotipo.png' pelo caminho correto do logotipo ou utilize uma URL
-st.sidebar.image("F:\dash_lux\pythonProject\LUX.webp", use_column_width=True)
+st.sidebar.image("LUX.webp", use_column_width=True)
 
 # Criação da sidebar para navegação
 st.sidebar.title("Navegação")
