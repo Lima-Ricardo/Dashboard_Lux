@@ -2,6 +2,25 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# Configuração do Streamlit para o tema escuro
+st.set_page_config(page_title="Ferramenta de Gestão", layout="wide")
+st.markdown(
+    """
+    <style>
+    .css-1v3fvcr {
+        background-color: #000000;
+    }
+    .css-1r6slb1 {
+        color: #FFFFFF;
+    }
+    .css-1bu3u8m {
+        color: #FFFFFF;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Caminho do arquivo
 path = "dados.xlsx"
 
@@ -55,12 +74,13 @@ def create_charts(df1, df2):
             x='Empresa',
             y='Consumo Ponta ',
             title='Consumo Ponta por Empresa',
-            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            color_discrete_sequence=['rgba(255,255,255,0.8)'],
             hover_data={'Consumo Ponta ': ':.2f', 'Empresa': False}
         )
         fig1.update_layout(
-            showlegend=False,
-            plot_bgcolor='#fafafa',
+            plot_bgcolor='#000000',
+            paper_bgcolor='#1e1e1e',
+            font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
         )
@@ -74,12 +94,13 @@ def create_charts(df1, df2):
             x='Empresa',
             y='Consumo Fora Ponta ',
             title='Consumo Fora Ponta por Empresa',
-            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            color_discrete_sequence=['rgba(255,255,255,0.8)'],
             hover_data={'Consumo Fora Ponta ': ':.2f', 'Empresa': False}
         )
         fig2.update_layout(
-            showlegend=False,
-            plot_bgcolor='#fafafa',
+            plot_bgcolor='#000000',
+            paper_bgcolor='#1e1e1e',
+            font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
         )
@@ -97,12 +118,13 @@ def create_charts(df1, df2):
             x='Distribuidora',
             y='Valor Médio da Fatura',
             title='Valor Médio da Fatura por Distribuidora',
-            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            color_discrete_sequence=['rgba(255,255,255,0.8)'],
             hover_data={'Valor Médio da Fatura': ':.2f', 'Distribuidora': False}
         )
         fig3.update_layout(
-            showlegend=False,
-            plot_bgcolor='#fafafa',
+            plot_bgcolor='#000000',
+            paper_bgcolor='#1e1e1e',
+            font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
         )
@@ -118,12 +140,13 @@ def create_charts(df1, df2):
             x='Modalidade Tarifária',
             y='Quantidade',
             title='Quantidade de Empresas por Modalidade Tarifária',
-            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            color_discrete_sequence=['rgba(255,255,255,0.8)'],
             hover_data={'Quantidade': True, 'Modalidade Tarifária': False}
         )
         fig4.update_layout(
-            showlegend=False,
-            plot_bgcolor='#fafafa',
+            plot_bgcolor='#000000',
+            paper_bgcolor='#1e1e1e',
+            font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
         )
@@ -141,12 +164,13 @@ def create_charts(df1, df2):
             x='Empresa',
             y='Quantidade',
             title='Quantidade de Contatos por Empresa',
-            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            color_discrete_sequence=['rgba(255,255,255,0.8)'],
             hover_data={'Quantidade': True, 'Empresa': False}
         )
         fig5.update_layout(
-            showlegend=False,
-            plot_bgcolor='#fafafa',
+            plot_bgcolor='#000000',
+            paper_bgcolor='#1e1e1e',
+            font_color='#FFFFFF',
             xaxis_title=None,
             yaxis_title=None
         )
@@ -178,14 +202,10 @@ def export_contacts(df1):
     csv = df1.to_csv(index=False)
     st.download_button(label="Exportar Contatos para CSV", data=csv, file_name='contatos.csv', mime='text/csv')
 
-# Configurações do Streamlit
-st.set_page_config(page_title="Ferramenta de Gestão", layout="wide")
-
 # Carregar dados
 df1, df2 = load_data()
 
 # Adicionar o logotipo da empresa no topo da sidebar
-# Substitua 'caminho_para_logotipo.png' pelo caminho correto do logotipo ou utilize uma URL
 st.sidebar.image("LUX.webp", use_column_width=True)
 
 # Criação da sidebar para navegação
