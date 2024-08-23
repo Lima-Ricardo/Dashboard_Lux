@@ -1,9 +1,8 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+import plotly.express as px
 
-# Configuração do caminho para o arquivo
+# Caminho do arquivo
 path = "C:\\Users\\rilim\\Downloads\\Simulação_Projeto_Interno_Tratado.xlsx"
 
 # Função para carregar os dados
@@ -15,13 +14,11 @@ def load_data():
         df1 = pd.DataFrame(columns=["Identificador", "Nome", "Cargo", "Empresa", "Telefone", "e-mail"])
         df2 = pd.DataFrame(
             columns=["Empresa", "Endereço - Rua", "Endereço - Numero", "Endereço - Estado", "Endereço - Cidade",
-                     "Endereço - CEP",
-                     "Razão Social", "CNPJ", "Distribuidora", "Modalidade Tarifária", "Consumo Ponta ",
-                     "Consumo Fora Ponta ",
-                     "Valor Médio da Fatura", "Gestor Responsável "])
+                     "Endereço - CEP", "Razão Social", "CNPJ", "Distribuidora", "Modalidade Tarifária", "Consumo Ponta ",
+                     "Consumo Fora Ponta ", "Valor Médio da Fatura", "Gestor Responsável "])
     return df1, df2
 
-# Função para criar gráficos e análises
+# Função para criar gráficos com as análises
 def create_charts(df1, df2):
     st.subheader('Análise Geral')
 
@@ -32,19 +29,19 @@ def create_charts(df1, df2):
     if not df2.empty and 'Consumo Ponta ' in df2.columns:
         total_consumo_ponta = df2['Consumo Ponta '].sum()
         with col1:
-            st.metric(label="Total Consumo Ponta", value=f"{total_consumo_ponta:,.2f}")
+            st.metric(label="Total Consumo Ponta", value=f"{total_consumo_ponta: ,.2f}")
 
     # Card 2: Total Consumo Fora Ponta
     if not df2.empty and 'Consumo Fora Ponta ' in df2.columns:
         total_consumo_fora_ponta = df2['Consumo Fora Ponta '].sum()
         with col2:
-            st.metric(label="Total Consumo Fora Ponta", value=f"{total_consumo_fora_ponta:,.2f}")
+            st.metric(label="Total Consumo Fora Ponta", value=f"{total_consumo_fora_ponta: ,.2f}")
 
     # Card 3: Média Valor da Fatura
     if not df2.empty and 'Valor Médio da Fatura' in df2.columns:
         media_valor_fatura = df2['Valor Médio da Fatura'].mean()
         with col3:
-            st.metric(label="Média Valor da Fatura", value=f"{media_valor_fatura:,.2f}")
+            st.metric(label="Média Valor da Fatura", value=f"{media_valor_fatura: ,.2f}")
 
     st.write("### Análise de Consumos e Valores")
 
@@ -52,38 +49,42 @@ def create_charts(df1, df2):
     col1, col2 = st.columns(2)
 
     # Gráfico de Consumo Ponta por Empresa
-    if not df2.empty:
-        fig1, ax1 = plt.subplots(figsize=(10, 5))
-        sns.barplot(x=df2['Empresa'], y=df2['Consumo Ponta '], color='#d6dbe4', ax=ax1)
-        ax1.set_xticklabels(ax1.get_xticklabels(), rotation=90)
-        ax1.set_title('Consumo Ponta por Empresa', color='white')
-        ax1.set_facecolor('#c3e3f7')  # Cor de fundo dos gráficos
-        ax1.set_frame_on(False)
-        for p in ax1.patches:
-            height = p.get_height()
-            ax1.text(p.get_x() + p.get_width() / 2.,
-                     height + 100,
-                     f'{height:,.0f}',
-                     ha="center", color='white', fontsize=10)
+    if not df2.empty and 'Consumo Ponta ' in df2.columns and 'Empresa' in df2.columns:
+        fig1 = px.bar(
+            df2,
+            x='Empresa',
+            y='Consumo Ponta ',
+            title='Consumo Ponta por Empresa',
+            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            hover_data={'Consumo Ponta ': ':.2f', 'Empresa': False}
+        )
+        fig1.update_layout(
+            showlegend=False,
+            plot_bgcolor='#fafafa',
+            xaxis_title=None,
+            yaxis_title=None
+        )
         with col1:
-            st.pyplot(fig1)
+            st.plotly_chart(fig1, use_container_width=True)
 
     # Gráfico de Consumo Fora Ponta por Empresa
-    if not df2.empty:
-        fig2, ax2 = plt.subplots(figsize=(10, 5))
-        sns.barplot(x=df2['Empresa'], y=df2['Consumo Fora Ponta '], color='#9cacbd', ax=ax2)
-        ax2.set_xticklabels(ax2.get_xticklabels(), rotation=90)
-        ax2.set_title('Consumo Fora Ponta por Empresa', color='white')
-        ax2.set_facecolor('#c3e3f7')  # Cor de fundo dos gráficos
-        ax2.set_frame_on(False)
-        for p in ax2.patches:
-            height = p.get_height()
-            ax2.text(p.get_x() + p.get_width() / 2.,
-                     height + 100,
-                     f'{height:,.0f}',
-                     ha="center", color='white', fontsize=10)
+    if not df2.empty and 'Consumo Fora Ponta ' in df2.columns and 'Empresa' in df2.columns:
+        fig2 = px.bar(
+            df2,
+            x='Empresa',
+            y='Consumo Fora Ponta ',
+            title='Consumo Fora Ponta por Empresa',
+            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            hover_data={'Consumo Fora Ponta ': ':.2f', 'Empresa': False}
+        )
+        fig2.update_layout(
+            showlegend=False,
+            plot_bgcolor='#fafafa',
+            xaxis_title=None,
+            yaxis_title=None
+        )
         with col2:
-            st.pyplot(fig2)
+            st.plotly_chart(fig2, use_container_width=True)
 
     st.write("### Análise por Modalidade Tarifária")
 
@@ -91,55 +92,65 @@ def create_charts(df1, df2):
 
     # Gráfico de Valor Médio da Fatura por Distribuidora
     if not df2.empty and 'Distribuidora' in df2.columns and 'Valor Médio da Fatura' in df2.columns:
-        fig3, ax3 = plt.subplots(figsize=(10, 5))
-        sns.barplot(x=df2['Distribuidora'], y=df2['Valor Médio da Fatura'], color='#233c73', ax=ax3)
-        ax3.set_title('Valor Médio da Fatura por Distribuidora', color='white')
-        ax3.set_facecolor('#c3e3f7')  # Cor de fundo dos gráficos
-        ax3.set_frame_on(False)
-        for p in ax3.patches:
-            height = p.get_height()
-            ax3.text(p.get_x() + p.get_width() / 2.,
-                     height + 500,
-                     f'{height:,.0f}',
-                     ha="center", color='white', fontsize=10)
+        fig3 = px.bar(
+            df2,
+            x='Distribuidora',
+            y='Valor Médio da Fatura',
+            title='Valor Médio da Fatura por Distribuidora',
+            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            hover_data={'Valor Médio da Fatura': ':.2f', 'Distribuidora': False}
+        )
+        fig3.update_layout(
+            showlegend=False,
+            plot_bgcolor='#fafafa',
+            xaxis_title=None,
+            yaxis_title=None
+        )
         with col1:
-            st.pyplot(fig3)
+            st.plotly_chart(fig3, use_container_width=True)
 
     # Gráfico de Empresas por Modalidade Tarifária
     if not df2.empty and 'Modalidade Tarifária' in df2.columns:
-        modalidade_counts = df2['Modalidade Tarifária'].value_counts()
-        fig4, ax4 = plt.subplots(figsize=(10, 5))
-        sns.barplot(x=modalidade_counts.index, y=modalidade_counts.values, color='#233c73', ax=ax4)
-        ax4.set_title('Quantidade de Empresas por Modalidade Tarifária', color='white')
-        ax4.set_facecolor('#c3e3f7')  # Cor de fundo dos gráficos
-        ax4.set_frame_on(False)
-        for p in ax4.patches:
-            height = p.get_height()
-            ax4.text(p.get_x() + p.get_width() / 2.,
-                     height + 1,
-                     f'{height:,.0f}',
-                     ha="center", color='white', fontsize=10)
+        modalidade_counts = df2['Modalidade Tarifária'].value_counts().reset_index()
+        modalidade_counts.columns = ['Modalidade Tarifária', 'Quantidade']
+        fig4 = px.bar(
+            modalidade_counts,
+            x='Modalidade Tarifária',
+            y='Quantidade',
+            title='Quantidade de Empresas por Modalidade Tarifária',
+            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            hover_data={'Quantidade': True, 'Modalidade Tarifária': False}
+        )
+        fig4.update_layout(
+            showlegend=False,
+            plot_bgcolor='#fafafa',
+            xaxis_title=None,
+            yaxis_title=None
+        )
         with col2:
-            st.pyplot(fig4)
+            st.plotly_chart(fig4, use_container_width=True)
 
     st.write("### Análise de Contatos")
 
     # Gráfico de quantidade de contatos por empresa
     if not df1.empty and 'Empresa' in df1.columns:
-        contact_counts = df1['Empresa'].value_counts()
-        fig5, ax5 = plt.subplots(figsize=(10, 5))
-        sns.barplot(x=contact_counts.index, y=contact_counts.values, color='#233c73', ax=ax5)
-        ax5.set_xticklabels(ax5.get_xticklabels(), rotation=90)
-        ax5.set_title('Quantidade de Contatos por Empresa', color='white')
-        ax5.set_facecolor('#c3e3f7')  # Cor de fundo dos gráficos
-        ax5.set_frame_on(False)
-        for p in ax5.patches:
-            height = p.get_height()
-            ax5.text(p.get_x() + p.get_width() / 2.,
-                     height + 1,
-                     f'{height:,.0f}',
-                     ha="center", color='white', fontsize=10)
-        st.pyplot(fig5)
+        contact_counts = df1['Empresa'].value_counts().reset_index()
+        contact_counts.columns = ['Empresa', 'Quantidade']
+        fig5 = px.bar(
+            contact_counts,
+            x='Empresa',
+            y='Quantidade',
+            title='Quantidade de Contatos por Empresa',
+            color_discrete_sequence=['rgba(35,60,115,0.6)'],
+            hover_data={'Quantidade': True, 'Empresa': False}
+        )
+        fig5.update_layout(
+            showlegend=False,
+            plot_bgcolor='#fafafa',
+            xaxis_title=None,
+            yaxis_title=None
+        )
+        st.plotly_chart(fig5, use_container_width=True)
 
 # Função para adicionar um contato
 def add_contact(df1, nome, cargo, empresa, telefone_email, cnpj, gestor):
@@ -153,7 +164,7 @@ def save_data(df1, df2):
     df1.to_excel(path, sheet_name='Clientes', index=False)
     df2.to_excel(path, sheet_name='Empresas', index=False)
 
-# Função para carregar contatos de um arquivo
+# Função para importar contatos de um arquivo
 def upload_contacts(file):
     new_contacts = pd.read_excel(file)
     required_columns = ["Identificador", "Nome", "Cargo", "Empresa", "Telefone", "e-mail"]
@@ -172,6 +183,10 @@ st.set_page_config(page_title="Ferramenta de Gestão", layout="wide")
 
 # Carregar dados
 df1, df2 = load_data()
+
+# Adicionar o logotipo da empresa no topo da sidebar
+# Substitua 'caminho_para_logotipo.png' pelo caminho correto do logotipo ou utilize uma URL
+st.sidebar.image("F:\dash_lux\pythonProject\LUX.webp", use_column_width=True)
 
 # Criação da sidebar para navegação
 st.sidebar.title("Navegação")
@@ -192,7 +207,8 @@ elif page == "Contatos":
             # Obter o CNPJ da empresa para o gestor selecionado
             cnpjs = df2[df2['Gestor Responsável '] == selected_gestor]['CNPJ']
             # Filtrar contatos pelo CNPJ das empresas associadas ao gestor
-            contatos_relevantes = df1[df1['Empresa'].isin(df2[df2['CNPJ'].isin(cnpjs)]['Empresa'])]
+            empresas_associadas = df2[df2['CNPJ'].isin(cnpjs)]['Empresa']
+            contatos_relevantes = df1[df1['Empresa'].isin(empresas_associadas)]
             st.write(contatos_relevantes)
 
     st.subheader('Dashboard dos Contatos e Empresas')
@@ -200,6 +216,11 @@ elif page == "Contatos":
     num_empresas = df2['Empresa'].nunique()
     st.write(f"**Número total de contatos:** {num_contatos}")
     st.write(f"**Número total de empresas:** {num_empresas}")
+
+    st.write("### Lista de Contatos")
+    st.write(df1)
+
+    export_contacts(df1)
 
 elif page == "Inserção de Novo Contato":
     st.title('Inserção de Novo Contato')
