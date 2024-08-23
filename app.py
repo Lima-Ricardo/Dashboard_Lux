@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 # Caminho do arquivo
-path = "C:\\Users\\rilim\\Downloads\\Simulação_Projeto_Interno_Tratado.xlsx"
+path = "dados.xlsx"
 
 # Função para carregar os dados
 def load_data():
